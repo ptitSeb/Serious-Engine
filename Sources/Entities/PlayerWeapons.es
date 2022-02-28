@@ -3967,7 +3967,7 @@ procedures:
     // spin start sounds
     PlaySound(pl.m_soWeapon2, SOUND_MINIGUN_CLICK, SOF_3D|SOF_VOLUMETRIC);
     PlaySound(pl.m_soWeapon1, SOUND_MINIGUN_SPINUP, SOF_3D|SOF_VOLUMETRIC);
-    pl.m_soWeapon1.SetOffset((m_aMiniGunSpeed/MINIGUN_FULLSPEED)*MINIGUN_SPINUPSOUND);
+    //pl.m_soWeapon1.SetOffset((m_aMiniGunSpeed/MINIGUN_FULLSPEED)*MINIGUN_SPINUPSOUND);
     if(_pNetwork->IsPlayerLocal(m_penPlayer)) {IFeel_PlayEffect("Minigun_rotateup");}
     // while not at full speed and fire is held
     while (m_aMiniGunSpeed<MINIGUN_FULLSPEED && HoldingFire()) {
@@ -4115,7 +4115,7 @@ procedures:
     // spin down sounds
     PlaySound(pl.m_soWeapon3, SOUND_MINIGUN_CLICK, SOF_3D|SOF_VOLUMETRIC);
     PlaySound(pl.m_soWeapon1, SOUND_MINIGUN_SPINDOWN, SOF_3D|SOF_VOLUMETRIC|SOF_SMOOTHCHANGE);
-    pl.m_soWeapon1.SetOffset((1-m_aMiniGunSpeed/MINIGUN_FULLSPEED)*MINIGUN_SPINDNSOUND);
+    //pl.m_soWeapon1.SetOffset((1-m_aMiniGunSpeed/MINIGUN_FULLSPEED)*MINIGUN_SPINDNSOUND);
     if(_pNetwork->IsPlayerLocal(m_penPlayer)) {IFeel_StopEffect("Minigun_rotate");}
     if(_pNetwork->IsPlayerLocal(m_penPlayer)) {IFeel_PlayEffect("Minigun_rotatedown");}
 
