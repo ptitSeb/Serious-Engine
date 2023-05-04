@@ -1038,9 +1038,15 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
                       (enum DisplayDepth)sam_iDisplayDepth, !sam_bFullScreenActive);
 #else
         int res = SDL_SetWindowFullscreen((SDL_Window *) _hwndMain, sam_bFullScreenActive ? 0 : SDL_WINDOW_FULLSCREEN);
-        if (res == 0)
+        if (res == 0) {
             sam_bFullScreenActive = !sam_bFullScreenActive;
-        else
+            char achWindowTitle[256];
+            if (sam_bFullScreenActive)
+                SDL_snprintf( achWindowTitle, sizeof (achWindowTitle), TRANS("Serious Sam (FullScreen %dx%d)"), sam_iScreenSizeI, sam_iScreenSizeJ);
+            else
+                SDL_snprintf( achWindowTitle, sizeof (achWindowTitle), TRANS("Serious Sam (Window %dx%d)"), sam_iScreenSizeI, sam_iScreenSizeJ);
+            SDL_SetWindowTitle((SDL_Window *) _hwndMain, achWindowTitle);
+        } else
             CPrintF("Can't toggle full-screen : %s\n", SDL_GetError());
 #endif
 
