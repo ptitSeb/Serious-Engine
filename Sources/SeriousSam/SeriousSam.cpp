@@ -1376,8 +1376,6 @@ void CheckTeaser(void)
     Sleep(500);
     _execl(fnmTeaser, "\""+fnmTeaser+"\"", NULL);
   }
-#else
-    STUBBED("load teaser");
 #endif
 }
 
