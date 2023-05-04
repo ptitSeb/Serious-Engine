@@ -1028,7 +1028,21 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
         }
       }
 #else
-      STUBBED("SDL2 can handle these events");
+      if( msg.message==SDL_WINDOWEVENT)
+      {
+        switch( msg.wParam) {
+        case SDL_WINDOWEVENT_MINIMIZED:
+          if( _bWindowChanging) break;
+          _bWindowChanging  = TRUE;
+          _bReconsiderInput = TRUE;
+          // if allowed, not already paused and only in single player game mode
+          if( sam_bPauseOnMinimize && !_pNetwork->IsPaused() && _gmRunningGameMode==GM_SINGLE_PLAYER) {
+            // pause game
+            _pNetwork->TogglePause();
+          }
+          break;
+        }
+      }
 #endif
 
       // toggle full-screen on alt-enter

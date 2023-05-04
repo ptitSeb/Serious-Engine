@@ -85,6 +85,11 @@ BOOL PeekMessage(MSG *msg, void *hwnd, UINT wMsgFilterMin,
                     msg->message = WM_PAINT;
                     return TRUE;
                 }
+                if (sdlevent.window.event == SDL_WINDOWEVENT_MINIMIZED)
+                {
+                    msg->wParam = sdlevent.window.event;
+                    return TRUE;
+                }
                 break;
 
             // These all map to WM_* things without any drama.
