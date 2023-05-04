@@ -105,7 +105,7 @@ properties:
  80 COLOR m_colBurning = COLOR(C_WHITE|CT_OPAQUE), // color applied when burning
 
  90 enum DamageType m_dmtLastDamageType=DMT_CHAINSAW,
- 91 FLOAT m_fChainSawCutDamage    "Chain saw cut dammage" 'C' = 300.0f,
+ 91 FLOAT m_fChainSawCutDamage    "Chain saw cut damage" 'C' = 300.0f,
  93 INDEX m_iFirstRandomAnimation "First random animation" 'R' = -1,
 100 FLOAT m_fMaxTessellationLevel "Max tessellation level" = 0.0f,
 
@@ -227,7 +227,7 @@ functions:
       {
         EDeath eDeath;  // we don't need any extra parameters
         SendEvent(eDeath);
-        //remember last dammage type
+        //remember last damage type
         m_dmtLastDamageType=dmtType;
       }
     }
@@ -290,7 +290,7 @@ functions:
       {
         EDeath eDeath;  // we don't need any extra parameters
         SendEvent(eDeath);
-        //remember last dammage type
+        //remember last damage type
         m_dmtLastDamageType=dmtType;
       }
     }

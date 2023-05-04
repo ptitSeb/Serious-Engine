@@ -75,7 +75,7 @@ properties:
  65 FLOAT m_fRotateSpeed "AR Rotate speed" 'S' = 180.0f,
  66 FLOAT m_fRotateTime "AR Rotate time" 'I' = 8.0f,
  67 FLOAT m_fRadX "AR Radius X" 'X' = 8.0f,
- 68 FLOAT m_fHeight "AR Height (controlls pitch)" 'H' = 4.0f,
+ 68 FLOAT m_fHeight "AR Height (controls pitch)" 'H' = 4.0f,
  69 FLOAT m_fRadZ "AR Radius Z" 'Z' = 8.0f,
 
  70 CEntityPointer m_penAutoCameraEndTarget "Auto camera end target",

@@ -5633,7 +5633,7 @@ void CNetworkStartMenu::Initialize_t(void)
   // server visible trigger
   TRIGGER_MG(mgNetworkVisible, 7,
        mgNetworkMaxPlayers, mgNetworkGameOptions, TRANS("Server visible:"), astrNoYes);
-  mgNetworkVisible.mg_strTip = TRANS("invisible servers are not listed, cleints have to join manually");
+  mgNetworkVisible.mg_strTip = TRANS("invisible servers are not listed, clients have to join manually");
 
   // options button
   mgNetworkGameOptions.mg_strText = TRANS("Game options");
