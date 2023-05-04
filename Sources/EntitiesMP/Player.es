@@ -6774,7 +6774,7 @@ procedures:
       // if any found
       if (penNextPlayer!=NULL) {
         // transfer keys to that player
-        CPrintF(TRANSV("%s leaving, all keys transfered to %s\n"), 
+        CPrintF(TRANSV("%s leaving, all keys transferred to %s\n"), 
           (const char*)m_strName, (const char*)penNextPlayer->GetPlayerName());
         penNextPlayer->m_ulKeys |= m_ulKeys;
       }

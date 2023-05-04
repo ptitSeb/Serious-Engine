@@ -266,19 +266,19 @@ void SetPyramidMorphRoomAlpha(CWorld *pwo, INDEX iBlending, TIME tmActivated)
 void CWorldBase_OnWorldInit(CWorld *pwo)
 {
   pwo->wo_attTextureTransformations[0].tt_strName = "None";
-  pwo->wo_attTextureTransformations[1].tt_strName = "R Extremly Slow";
+  pwo->wo_attTextureTransformations[1].tt_strName = "R Extremely Slow";
   pwo->wo_attTextureTransformations[2].tt_strName = "R Very Slow";
   pwo->wo_attTextureTransformations[3].tt_strName = "R Slow";
   pwo->wo_attTextureTransformations[4].tt_strName = "R Medium";
   pwo->wo_attTextureTransformations[5].tt_strName = "R Fast";
   pwo->wo_attTextureTransformations[6].tt_strName = "R Very Fast";
-  pwo->wo_attTextureTransformations[7].tt_strName = "R Extremly Fast";
+  pwo->wo_attTextureTransformations[7].tt_strName = "R Extremely Fast";
 
   pwo->wo_attTextureTransformations[8].tt_strName = "Dummy 1";
   pwo->wo_attTextureTransformations[9].tt_strName = "Dummy 2";
   pwo->wo_attTextureTransformations[10].tt_strName = "Dummy 3";
 
-  pwo->wo_attTextureTransformations[11].tt_strName = "Water movement extremly slow";
+  pwo->wo_attTextureTransformations[11].tt_strName = "Water movement Extremely slow";
   pwo->wo_attTextureTransformations[12].tt_strName = "Water movement very slow";
   pwo->wo_attTextureTransformations[13].tt_strName = "Water movement slow";
   pwo->wo_attTextureTransformations[14].tt_strName = "Water movement normal";
@@ -308,15 +308,15 @@ void CWorldBase_OnWorldInit(CWorld *pwo)
   pwo->wo_attTextureTransformations[35].tt_strName = "Rotation Right 9";
   pwo->wo_attTextureTransformations[36].tt_strName = "Rotation Right 10";
 
-  pwo->wo_attTextureTransformations[37].tt_strName = "D Extremly Slow";
+  pwo->wo_attTextureTransformations[37].tt_strName = "D Extremely Slow";
   pwo->wo_attTextureTransformations[38].tt_strName = "D Very Slow";
   pwo->wo_attTextureTransformations[39].tt_strName = "D Slow";
   pwo->wo_attTextureTransformations[40].tt_strName = "D Medium";
   pwo->wo_attTextureTransformations[41].tt_strName = "D Fast";
   pwo->wo_attTextureTransformations[42].tt_strName = "D Very Fast";
-  pwo->wo_attTextureTransformations[43].tt_strName = "D Extremly Fast";
+  pwo->wo_attTextureTransformations[43].tt_strName = "D Extremely Fast";
   pwo->wo_attTextureTransformations[44].tt_strName = "D Super Fast";
-  pwo->wo_attTextureTransformations[45].tt_strName = "D Abnormaly Fast";
+  pwo->wo_attTextureTransformations[45].tt_strName = "D Abnormally Fast";
 
 // static
   pwo->wo_atbTextureBlendings[0].tb_strName         = "Opaque";

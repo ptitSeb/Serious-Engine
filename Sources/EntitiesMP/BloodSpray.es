@@ -23,7 +23,7 @@ event ESpawnSpray {
   enum SprayParticlesType sptType, // type of particles
   FLOAT fDamagePower,              // factor saying how powerfull damage has been
   FLOAT fSizeMultiplier,           // stretch factor
-  FLOAT3D vDirection,              // dammage direction  
+  FLOAT3D vDirection,              // damage direction  
   CEntityPointer penOwner,         // who spawned the spray
   COLOR colCentralColor,           // central color of particles that is randomized a little
   FLOAT fLaunchPower,
@@ -39,7 +39,7 @@ properties:
 
   1 enum SprayParticlesType m_sptType = SPT_NONE,                    // type of particles
   2 FLOAT m_tmStarted = 0.0f,                                        // time when spawned
-  3 FLOAT3D m_vDirection = FLOAT3D(0,0,0),                           // dammage direction
+  3 FLOAT3D m_vDirection = FLOAT3D(0,0,0),                           // damage direction
   5 CEntityPointer m_penOwner,                                       // who spawned the spray
   6 FLOAT m_fDamagePower = 1.0f,                                     // power of inflicted damage
   8 FLOATaabbox3D m_boxSizedOwner = FLOATaabbox3D(FLOAT3D(0,0,0), 0.01f), // bounding box of blood spray's owner
