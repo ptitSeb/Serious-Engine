@@ -262,7 +262,6 @@ static BOOL StartUp_SDLaudio( CSoundLibrary &sl, BOOL bReport=TRUE)
 
   // report success
   if( bReport) {
-    STUBBED("Report actual SDL device name?");
     CPrintF( TRANSV("  opened device: %s\n"), "SDL audio stream");
     CPrintF( TRANSV("  %dHz, %dbit, %s\n"),
              sl.sl_SwfeFormat.nSamplesPerSec,
