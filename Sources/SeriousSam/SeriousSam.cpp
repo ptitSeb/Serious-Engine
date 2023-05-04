@@ -1033,10 +1033,16 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 
       // toggle full-screen on alt-enter
       if( msg.message==WM_SYSKEYDOWN && msg.wParam==VK_RETURN && !IsIconic(_hwndMain)) {
-        // !!! FIXME: SDL doesn't need to rebuild the GL context here to toggle fullscreen.
-        STUBBED("SDL doesn't need to rebuild the GL context here...");
+#ifdef PLATFORM_WIN32
         StartNewMode( (GfxAPIType)sam_iGfxAPI, sam_iDisplayAdapter, sam_iScreenSizeI, sam_iScreenSizeJ,
                       (enum DisplayDepth)sam_iDisplayDepth, !sam_bFullScreenActive);
+#else
+        int res = SDL_SetWindowFullscreen((SDL_Window *) _hwndMain, sam_bFullScreenActive ? 0 : SDL_WINDOW_FULLSCREEN);
+        if (res == 0)
+            sam_bFullScreenActive = !sam_bFullScreenActive;
+        else
+            CPrintF("Can't toggle full-screen : %s\n", SDL_GetError());
+#endif
 
         if (_pInput != NULL) // rcg02042003 hack for SDL vs. Win32.
           _pInput->ClearRelativeMouseMotion();
