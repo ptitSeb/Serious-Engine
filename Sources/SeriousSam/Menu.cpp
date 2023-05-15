@@ -4357,7 +4357,7 @@ void CLoadSaveMenu::StartMenu(void)
 
   // list the directory
   CDynamicStackArray<CTFileName> afnmDir;
-  MakeDirList(afnmDir, gm_fnmDirectory, CTString(""), 0);
+  MakeDirList(afnmDir, gm_fnmDirectory, CTString(""), DLI_SEARCHCD);
   gm_iLastFile = -1;
 
   // for each file in the directory
