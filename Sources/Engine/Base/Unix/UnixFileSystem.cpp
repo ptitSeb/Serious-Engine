@@ -22,6 +22,43 @@
 
 ENGINE_API CFileSystem *_pFileSystem = NULL;
 
+// Stolen from SDL2/src/filesystem/unix/SDL_sysfilesystem.c
+static char * readSymLink(const char *path)
+{
+    char *retval = NULL;
+    ssize_t len = 64;
+    ssize_t rc = -1;
+
+    while (1)
+    {
+        char *ptr = (char *) SDL_realloc(retval, (size_t) len);
+        if (ptr == NULL) {
+            SDL_OutOfMemory();
+            break;
+        }
+
+        retval = ptr;
+
+        rc = readlink(path, retval, len);
+        if (rc == -1) {
+            break;  /* not a symlink, i/o error, etc. */
+        } else if (rc < len) {
+            retval[rc] = '\0';  /* readlink doesn't null-terminate. */
+
+            /* try to shrink buffer... */
+            ptr = (char *) SDL_realloc(retval, strlen(retval) + 1);
+            if (ptr != NULL)
+                retval = ptr;  /* oh well if it failed. */
+
+            return retval;  /* we're good to go. */
+        }
+
+        len *= 2;  /* grow buffer, try again. */
+    }
+
+    SDL_free(retval);
+    return NULL;
+}
 
 class CUnixFileSystem : public CFileSystem
 {
@@ -77,7 +114,7 @@ BOOL CFileSystem::IsDirectory(const char *fname)
 
 CUnixFileSystem::CUnixFileSystem(const char *argv0, const char *gamename)
 {
-    exePath = SDL_GetBasePath();
+    exePath = readSymLink("/proc/self/exe");
     userDir = SDL_GetPrefPath("Serious Engine", gamename);
 }
 
