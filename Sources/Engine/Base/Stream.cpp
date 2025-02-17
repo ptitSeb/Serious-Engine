@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <filesystem>
 
 // !!! FIXME : rcg10162001 Need this anymore, since _findfirst() is abstracted?
 #ifdef PLATFORM_WIN32
@@ -918,7 +919,13 @@ void CTFileStream::Open_t(const CTFileName &fnFileName, CTStream::OpenMode om/*=
 
 static void MakeSureDirectoryPathExists(const CTFileName &fnmFullFileName)
 {
-    STUBBED("!!! FIXME: get the code back in from Ryan's original port.");
+    CTFileName fnDirectory = fnmFullFileName.FileDir();
+    const char *path = (const char *) (CTString&)fnDirectory;
+    std::error_code ec;
+    std::filesystem::create_directories(path, ec);
+    if (ec) {
+        FatalError("Cannot create directory path:\n%s", path);
+    }
 }
 
 /*
