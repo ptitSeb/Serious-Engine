@@ -1364,8 +1364,11 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 
 void CheckModReload(void)
 {
-#ifdef PLATFORM_WIN32
   if (_fnmModToLoad!="") {
+    CTString strMod = _fnmModToLoad.FileName();
+    const char *argv[9];
+    int i = 0;
+#ifdef PLATFORM_WIN32
 #ifndef NDEBUG
     CTString strDebug = "Debug\\";
 #else
@@ -1373,25 +1376,33 @@ void CheckModReload(void)
 #endif
     CTString strCommand = _fnmApplicationPath+"Bin\\"+strDebug+"SeriousSam.exe";
     //+mod "+_fnmModToLoad.FileName()+"\"";
-    CTString strMod = _fnmModToLoad.FileName();
-    const char *argv[7];
-    argv[0] = strCommand;
-    argv[1] = "+game";
-    argv[2] = strMod;
-    argv[3] = NULL;
+    argv[i++] = strCommand;
+#else
+    argv[i++] = argv0;
+#endif
+    argv[i++] = "+game";
+    argv[i++] = strMod;
+    argv[i] = NULL;
+    if (_fnmCDPath!="") {
+        argv[i++] = "+cdpath";
+        argv[i++] = _fnmCDPath;
+        argv[i] = NULL;
+    }
     if (_strModServerJoin!="") {
-      argv[3] = "+connect";
-      argv[4] = _strModServerJoin;
-      argv[5] = "+quickjoin";
-      argv[6] = NULL;
+      argv[i++] = "+connect";
+      argv[i++] = _strModServerJoin;
+      argv[i++] = "+quickjoin";
+      argv[i] = NULL;
     }
 
+#ifdef PLATFORM_WIN32
     _execv(strCommand, argv);
     MessageBoxA(0, "Error launching the Mod!\n", "Serious Sam", MB_OK|MB_ICONERROR);
-  }
 #else
-    STUBBED("reload ourself?");
+    execv(argv0, (char* const*)argv);
+    fprintf(stderr, "Error launching Mod '%s'! execv(%s, ...)\n", strMod, argv0);
 #endif
+  }
 }
 
 void CheckTeaser(void)
