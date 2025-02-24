@@ -1534,7 +1534,7 @@ void CGame::UnpackHighScoreTable(SLONG slSize)
     gm_ahseHighScores[i].hse_strPlayer = (const char*)pub;
     pub += MAX_HIGHSCORENAME+1;
     memcpy(&gm_ahseHighScores[i].hse_gdDifficulty, pub, sizeof(INDEX));
-    BYTESWAP(gm_ahseHighScores[i].hse_gdDifficulty);
+    BYTESWAP((int&)gm_ahseHighScores[i].hse_gdDifficulty);
     pub += sizeof(INDEX);
     memcpy(&gm_ahseHighScores[i].hse_tmTime      , pub, sizeof(FLOAT));
     BYTESWAP(gm_ahseHighScores[i].hse_tmTime);

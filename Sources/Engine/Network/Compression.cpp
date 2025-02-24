@@ -18,7 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Engine/Base/Stream.h>
 #include <Engine/Network/Compression.h>
 #include <Engine/Base/Synchronization.h>
-#include <Engine/zlib/zlib.h>
+#include <zlib.h>
 
 extern CTCriticalSection zip_csLock; // critical section for access to zlib functions
 
