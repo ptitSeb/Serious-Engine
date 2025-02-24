@@ -21,7 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 extern FLOAT mth_fCSGEpsilon;
 
-#ifdef __arm__
+#if defined __arm__ && defined __ARM_PCS_VFP
 #define SPHERE_HACK
 #endif
 
