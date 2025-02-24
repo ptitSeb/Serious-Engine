@@ -59,6 +59,8 @@ if(USE_SYSTEM_ZLIB)
     else()
         message(FATAL_ERROR "Error! USE_SYSTEM_ZLIB is set but neccessary developer files are missing")
     endif()
+else()
+    include_directories(${CMAKE_SOURCE_DIR}/Engine/zlib)
 endif()
 
 # RAKE! Where to install the binaries.

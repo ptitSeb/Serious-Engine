@@ -32,7 +32,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 typedef unsigned char Byte;  // !!! FIXME:  not sure why I suddenly needed this typedef here.
 #endif
 
-#include <Engine/zlib/zlib.h>
+#include <zlib.h>
 extern CTCriticalSection zip_csLock; // critical section for access to zlib functions
 
 #pragma pack(1)
