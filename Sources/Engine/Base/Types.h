@@ -759,6 +759,9 @@ inline __uint64 BYTESWAP64_unsigned(__uint64 x)
         val = *((SLONG *) &uval);
     }
 
+/**
+ * BOOL is int32_t , just like SLONG
+ * so don't define the same function twice
     static inline void BYTESWAP(BOOL &val)
     {
         // !!! FIXME: reinterpret_cast ?
@@ -766,6 +769,7 @@ inline __uint64 BYTESWAP64_unsigned(__uint64 x)
         BYTESWAP(uval);
         val = *((BOOL *) &uval);
     }
+*/
 
     static inline void BYTESWAP(FLOAT &val)
     {
