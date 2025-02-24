@@ -56,7 +56,7 @@ typedef uint32_t UINT;
 #endif
 
 // TODO: add more architecture detection routines
-#if __POWERPC__ || (defined __ppc64__) || (defined __alpha__) || (defined __sparc__) /* rcg03232004 */
+#if (defined __hppa__) || (defined __m68k__) || (defined __s390x__) || (defined __sparc__) || __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ /* rcg03232004 */
   #define PLATFORM_BIGENDIAN 1
   #define PLATFORM_LITTLEENDIAN 0
 #else
@@ -65,7 +65,7 @@ typedef uint32_t UINT;
 #endif
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__) || defined(_ARCH_PPC64) \
-    || defined(_M_IA64) || defined(__IA64__) || defined(__e2k__)
+    || defined(_M_IA64) || defined(__IA64__) || defined(__e2k__) || defined(__alpha__) || defined(__loongarch__) || defined(__riscv) || defined(__s390x__) || (defined(__mips__) && _MIPS_SIM == _ABI64) || (defined(__sparc__) && defined(__arch64__))
 
   #define PLATFORM_64BIT 1
 
