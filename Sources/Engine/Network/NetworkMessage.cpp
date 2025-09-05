@@ -915,7 +915,13 @@ CNetworkMessage &operator<<(CNetworkMessage &nm, const CPlayerAction &pa)
     } else {
       UBYTE ub=1;
       nm.WriteBits(&ub, 1);
+#if PLATFORM_BIGENDIAN
+      ULONG tmp = *pul;
+      BYTESWAP(tmp);
+      nm.WriteBits(&tmp, 32);
+#else
       nm.WriteBits(pul, 32);
+#endif
     }
     pul++;
   }
@@ -933,27 +939,57 @@ CNetworkMessage &operator<<(CNetworkMessage &nm, const CPlayerAction &pa)
   } else if (ulFlags <= 3) {
     UBYTE ub=4;
     nm.WriteBits(&ub, 3);
+#if PLATFORM_BIGENDIAN
+    ULONG tmp = ulFlags;
+    BYTESWAP(tmp);
+    nm.WriteBits(&tmp, 1);
+#else
     nm.WriteBits(&ulFlags, 1);
+#endif
   // (4-15)       0001    = 4 bit value follows
   } else if (ulFlags <= 15) {
     UBYTE ub=8;
     nm.WriteBits(&ub, 4);
+#if PLATFORM_BIGENDIAN
+    ULONG tmp = ulFlags;
+    BYTESWAP(tmp);
+    nm.WriteBits(&tmp, 4);
+#else
     nm.WriteBits(&ulFlags, 4);
+#endif
   // (16-255)     00001   = 8 bit value follows
   } else if (ulFlags <= 255) {
     UBYTE ub=16;
     nm.WriteBits(&ub, 5);
+#if PLATFORM_BIGENDIAN
+    ULONG tmp = ulFlags;
+    BYTESWAP(tmp);
+    nm.WriteBits(&tmp, 8);
+#else
     nm.WriteBits(&ulFlags, 8);
+#endif
   // (256-65535)  000001  = 16 bit value follows
   } else if (ulFlags <= 65535) {
     UBYTE ub=32;
     nm.WriteBits(&ub, 6);
+#if PLATFORM_BIGENDIAN
+    ULONG tmp = ulFlags;
+    BYTESWAP(tmp);
+    nm.WriteBits(&tmp, 16);
+#else
     nm.WriteBits(&ulFlags, 16);
+#endif
   // (65536-)     000000  = 32 bit value follows
   } else {
     UBYTE ub=0;
     nm.WriteBits(&ub, 6);
+#if PLATFORM_BIGENDIAN
+    ULONG tmp = ulFlags;
+    BYTESWAP(tmp);
+    nm.WriteBits(&tmp, 32);
+#else
     nm.WriteBits(&ulFlags, 32);
+#endif
   }
   return nm;
 }
@@ -970,6 +1006,7 @@ CNetworkMessage &operator>>(CNetworkMessage &nm, CPlayerAction &pa)
       *pul = 0;
     } else {
       nm.ReadBits(pul, 32);
+      BYTESWAP(*pul);
     }
     pul++;
   }
@@ -995,23 +1032,28 @@ CNetworkMessage &operator>>(CNetworkMessage &nm, CPlayerAction &pa)
   } else if (iZeros==2) {
     ulFlags = 0;
     nm.ReadBits(&ulFlags, 1);
+    BYTESWAP(ulFlags);
     ulFlags |= 2;
   // (4-15)       0001    = 4 bit value follows
   } else if (iZeros==3) {
     ulFlags = 0;
     nm.ReadBits(&ulFlags, 4);
+    BYTESWAP(ulFlags);
   // (16-255)     00001   = 8 bit value follows
   } else if (iZeros==4) {
     ulFlags = 0;
     nm.ReadBits(&ulFlags, 8);
   // (256-65535)  000001  = 16 bit value follows
+    BYTESWAP(ulFlags);
   } else if (iZeros==5) {
     ulFlags = 0;
     nm.ReadBits(&ulFlags, 16);
+    BYTESWAP(ulFlags);
   // (65536-)     000000  = 32 bit value follows
   } else {
     ulFlags = 0;
     nm.ReadBits(&ulFlags, 32);
+    BYTESWAP(ulFlags);
   }
   pa.pa_ulButtons = ulFlags;
   return nm;

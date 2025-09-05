@@ -95,6 +95,26 @@ struct DECL_DLL PlayerStats {
   PlayerStats(void): ps_iScore(0), ps_iKills(0), ps_iDeaths(0), ps_iSecrets(0), ps_tmTime(0.0f){}
 };
 
+static inline CTStream &operator>>(CTStream &strm, PlayerStats &ps)
+{
+  strm>>ps.ps_iScore;
+  strm>>ps.ps_iKills;
+  strm>>ps.ps_iDeaths;
+  strm>>ps.ps_iSecrets;
+  strm>>ps.ps_tmTime;
+  return strm;
+}
+
+static inline CTStream &operator<<(CTStream &strm, const PlayerStats &ps)
+{
+  strm<<ps.ps_iScore;
+  strm<<ps.ps_iKills;
+  strm<<ps.ps_iDeaths;
+  strm<<ps.ps_iSecrets;
+  strm<<ps.ps_tmTime;
+  return strm;
+}
+
 // get info position for entity
 DECL_DLL void GetEntityInfoPosition(CEntity *pen, FLOAT *pf, FLOAT3D &vPos);
 // get source and target positions for ray cast

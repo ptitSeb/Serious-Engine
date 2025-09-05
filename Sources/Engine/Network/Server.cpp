@@ -510,11 +510,26 @@ void CServer::SendGameStreamBlocks(INDEX iClient)
       CPlayerBuffer &plb = srv_aplbPlayers[i];
       if (plb.IsActive()) {
         BOOL b = 1;
+#if PLATFORM_BIGENDIAN
+        SLONG tmp = b;
+        BYTESWAP(tmp);
+        nmPings.WriteBits(&tmp, 1);
+        tmp = plb.plb_iPing;
+        BYTESWAP(tmp);
+        nmPings.WriteBits(&tmp, 10);
+#else
         nmPings.WriteBits(&b, 1);
         nmPings.WriteBits(&plb.plb_iPing, 10);
+#endif
       } else {
         BOOL b = 0;
+#if PLATFORM_BIGENDIAN
+        SLONG tmp = b;
+        BYTESWAP(tmp);
+        nmPings.WriteBits(&tmp, 1);
+#else
         nmPings.WriteBits(&b, 1);
+#endif
       }
     }
     _pNetwork->SendToClient(iClient, nmPings);
@@ -1354,11 +1369,13 @@ void CServer::Handle(INDEX iClient, CNetworkMessage &nmMessage)
       // see if saved in the message
       BOOL bSaved = 0;
       nmMessage.ReadBits(&bSaved, 1);
+      BYTESWAP(bSaved);
       // if saved
       if (bSaved) {
         // read client index
         INDEX iPlayer = 0;
         nmMessage.ReadBits(&iPlayer, 4);
+        BYTESWAP(iPlayer);
         CPlayerBuffer &plb = srv_aplbPlayers[iPlayer];
         // if the player is not on that client
         if (plb.plb_iClient!=iClient) {
@@ -1369,6 +1386,7 @@ void CServer::Handle(INDEX iClient, CNetworkMessage &nmMessage)
         // read ping
         plb.plb_iPing = 0;
         nmMessage.ReadBits(&plb.plb_iPing, 10);
+        BYTESWAP(plb.plb_iPing);
         // let the corresponding client buffer receive the message
         INDEX iMaxBuffer = sso.sso_sspParams.ssp_iBufferActions;
         extern INDEX cli_bPredictIfServer;

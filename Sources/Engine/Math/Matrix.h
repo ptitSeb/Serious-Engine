@@ -68,11 +68,38 @@ public:
   friend __forceinline CTStream &operator>>(CTStream &strm, Matrix<Type, iRows, iColumns> &matrix)
   {
     strm.Read_t(&matrix, sizeof(matrix));
+    #if PLATFORM_BIGENDIAN
+    for (int i = 0; i < iRows; i++)
+    {
+        for (int j = 0; j < iColumns; j++)
+        {
+            BYTESWAP(matrix.matrix[i][j]);
+        }
+    }
+    #endif
     return strm;
   }
   friend __forceinline CTStream &operator<<(CTStream &strm, Matrix<Type, iRows, iColumns> &matrix)
   {
+    #if PLATFORM_BIGENDIAN
+    for (int i = 0; i < iRows; i++)
+    {
+        for (int j = 0; j < iColumns; j++)
+        {
+            BYTESWAP(matrix.matrix[i][j]);
+        }
+    }
+    #endif
     strm.Write_t(&matrix, sizeof(matrix));
+    #if PLATFORM_BIGENDIAN
+    for (int i = 0; i < iRows; i++)
+    {
+        for (int j = 0; j < iColumns; j++)
+        {
+            BYTESWAP(matrix.matrix[i][j]);
+        }
+    }
+    #endif
     return strm;
   }
 };

@@ -109,7 +109,11 @@ pixLoop:
    DWORD* dst = (DWORD*)(pubTexture+pixTextureSize);
    for (int i=0; i<pixTextureSize; i++) {
     const DWORD tmp = ((DWORD)*src) | 0xFFFFFF00;
+#if PLATFORM_LITTLEENDIAN
     *dst = BYTESWAP32_unsigned((ULONG)tmp);
+#else
+    *dst = tmp;
+#endif
     src++;
     dst++;
    }

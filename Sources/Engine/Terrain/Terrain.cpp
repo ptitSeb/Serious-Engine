@@ -1972,10 +1972,12 @@ void CTerrain::Write_t( CTStream *ostrFile)
   INDEX iShadingMapSize = GetShadingMapWidth() * GetShadingMapHeight() * sizeof(UWORD);
   // Write shadow map
   ASSERT(tr_tdShadowMap.td_pulFrames!=NULL);
-  ostrFile->Write_t(&tr_tdShadowMap.td_pulFrames[0],iShadowMapSize);
+  for (INDEX i = 0; i < iShadowMapSize; i++)
+      (*ostrFile)<<tr_tdShadowMap.td_pulFrames[i];
   // Write shading map
   ASSERT(tr_auwShadingMap!=NULL);
-  ostrFile->Write_t(&tr_auwShadingMap[0],iShadingMapSize);
+  for (INDEX i = 0; i < iShadingMapSize; i++)
+      (*ostrFile)<<tr_auwShadingMap[i];
 
   ostrFile->WriteID_t("TSEN");    // 'Terrain shadowmap end'
 
@@ -1989,7 +1991,7 @@ void CTerrain::Write_t( CTStream *ostrFile)
 
   (*ostrFile).WriteID_t("TRHM");  // 'Terrain heightmap'
   // write height map
-  (*ostrFile).Write_t(&tr_auwHeightMap[0],sizeof(UWORD)*tr_pixHeightMapWidth*tr_pixHeightMapHeight);
+  for (int i = 0; i < (tr_pixHeightMapWidth * tr_pixHeightMapHeight); i++) (*ostrFile)<<tr_auwHeightMap[i];
   (*ostrFile).WriteID_t("THEN");  // 'Terrain heightmap end'
 
   (*ostrFile).WriteID_t("TRLR");  // 'Terrain layers'

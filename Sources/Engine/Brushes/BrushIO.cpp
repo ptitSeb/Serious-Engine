@@ -246,7 +246,7 @@ void CBrushPolygonTexture::Read_t( CTStream &strm) // throw char *
 void CBrushPolygonTexture::Write_t( CTStream &strm)  // throw char *
 {
   strm<<bpt_toTexture.GetName();
-  strm.Write_t(&bpt_mdMapping, sizeof(bpt_mdMapping));
+  strm<<bpt_mdMapping;
   strm<<s.bpt_ubScroll;
   strm<<s.bpt_ubBlend;
   strm<<s.bpt_ubFlags;
@@ -280,7 +280,7 @@ void CBrushSector::Write_t( CTStream *postrm) // throw char *
   // for each vertex
   {FOREACHINSTATICARRAY(bsc_abvxVertices, CBrushVertex, itbvx) {
     // write precise vertex coordinates
-    postrm->Write_t(&itbvx->bvx_vdPreciseRelative, sizeof(DOUBLE3D));
+    (*postrm)<<itbvx->bvx_vdPreciseRelative;
   }}
 
   (*postrm).WriteID_t("PLNs");  // 'planes'
@@ -289,7 +289,7 @@ void CBrushSector::Write_t( CTStream *postrm) // throw char *
   // for each plane
   {FOREACHINSTATICARRAY(bsc_abplPlanes, CBrushPlane, itbpl) {
     // write precise plane coordinates
-    postrm->Write_t(&itbpl->bpl_pldPreciseRelative, sizeof(DOUBLEplane3D));
+    (*postrm)<<itbpl->bpl_pldPreciseRelative;
   }}
 
   (*postrm).WriteID_t("EDGs");  // 'edges'
@@ -320,7 +320,7 @@ void CBrushSector::Write_t( CTStream *postrm) // throw char *
     bpo.bpo_abptTextures[1].Write_t(*postrm);
     bpo.bpo_abptTextures[2].Write_t(*postrm);
     // write other polygon properties
-    (*postrm).Write_t(&bpo.bpo_bppProperties, sizeof(bpo.bpo_bppProperties));
+    (*postrm)<<bpo.bpo_bppProperties;
 
     // write number of polygon edges
     (*postrm)<<bpo.bpo_abpePolygonEdges.Count();
@@ -350,7 +350,9 @@ void CBrushSector::Write_t( CTStream *postrm) // throw char *
     (*postrm)<<ctElements;
     // write all element indices
     if (ctElements>0) {
-      (*postrm).Write_t(&bpo.bpo_aiTriangleElements[0], ctElements*sizeof(INDEX));
+      for (INDEX i = 0; i < ctElements; i++) {
+        (*postrm)<<bpo.bpo_aiTriangleElements[i];
+      }
     }
 
     // write the shadow-map (if it exists)

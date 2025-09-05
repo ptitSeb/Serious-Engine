@@ -583,7 +583,7 @@ INDEX CSoundDecoder::Decode(void *pvDestBuffer, INDEX ctBytesToDecode)
       long iRes = pov_read(sdc_pogg->ogg_vfVorbisFile, pch, ctBytesToDecode-ctDecoded, &iCurrrentSection);
       #else
       long iRes = pov_read(sdc_pogg->ogg_vfVorbisFile, pch, ctBytesToDecode-ctDecoded, 
-        0, 2, 1, &iCurrrentSection);
+        PLATFORM_BIGENDIAN, 2, 1, &iCurrrentSection);
       #endif
       if (iRes<=0) {
         return ctDecoded;

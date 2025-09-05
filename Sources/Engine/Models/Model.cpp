@@ -1178,10 +1178,6 @@ void CModelData::Write_t( CTStream *pFile)  // throw char *
   // Save flags
   (*pFile) << md_Flags;
 
-  #if PLATFORM_BIGENDIAN
-  STUBBED("byte order");
-  #endif
-
   // Save vertices and frames ct
   pFile->WriteFullChunk_t( CChunkID("IVTX"), &md_VerticesCt, sizeof(INDEX));
   pFile->WriteFullChunk_t( CChunkID("IFRM"), &md_FramesCt, sizeof(INDEX));
@@ -1689,6 +1685,7 @@ void CModelData::Read_t( CTStream *pFile) // throw char *
   // Read color names (Read count, read existing names)
   INDEX iValidColorsCt;
   pFile->ReadFullChunk_t( CChunkID("ICLN"), &iValidColorsCt, sizeof(INDEX));
+  BYTESWAP(iValidColorsCt);
   for( i=0; i<iValidColorsCt; i++)
   {
     INDEX iExistingColorName;
@@ -1935,9 +1932,9 @@ void CModelObject::Write_t( CTStream *pFile)  // throw char *
 
   pFile->WriteID_t( CChunkID( "MODT"));
   *pFile << mo_colBlendColor;
-  pFile->Write_t( &mo_PatchMask, sizeof(ULONG));
-  pFile->Write_t( &mo_Stretch, sizeof(FLOAT3D));
-  pFile->Write_t( &mo_ColorMask, sizeof(ULONG));
+  *pFile << mo_PatchMask;
+  *pFile << mo_Stretch;
+  *pFile << mo_ColorMask;
 }
 //------------------------------------------ READ
 void CModelObject::Read_t( CTStream *pFile) // throw char *

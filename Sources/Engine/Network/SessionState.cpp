@@ -43,6 +43,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Engine/Templates/StaticArray.cpp>
 #include <Engine/Base/ListIterator.inl>
 #include <Engine/Base/CRC.h>
+#include <GameMP/SessionProperties.h>
 
 #define SESSIONSTATEVERSION_OLD 1
 #define SESSIONSTATEVERSION_WITHBULLETTIME 2
@@ -1614,6 +1615,46 @@ void CSessionState::Read_t(CTStream *pstr)  // throw char *
   // read session properties from stream
   (*pstr)>>_pNetwork->ga_strSessionName;
   pstr->Read_t(_pNetwork->ga_aubProperties, NET_MAXSESSIONPROPERTIES);
+  CSessionProperties* psp = (CSessionProperties*)_pNetwork->ga_aubProperties;
+  BYTESWAP(psp->sp_ctMaxPlayers);
+  BYTESWAP(psp->sp_bWaitAllPlayers);
+  BYTESWAP(psp->sp_bQuickTest);
+  BYTESWAP(psp->sp_bCooperative);
+  BYTESWAP(psp->sp_bSinglePlayer);
+  BYTESWAP(psp->sp_bUseFrags);
+  BYTESWAP((INDEX&)psp->sp_gmGameMode);
+  BYTESWAP((INDEX&)psp->sp_gdGameDifficulty);
+  BYTESWAP(psp->sp_ulSpawnFlags);
+  BYTESWAP(psp->sp_bMental);
+  BYTESWAP(psp->sp_iScoreLimit);
+  BYTESWAP(psp->sp_iFragLimit);
+  BYTESWAP(psp->sp_iTimeLimit);
+  BYTESWAP(psp->sp_bTeamPlay);
+  BYTESWAP(psp->sp_bFriendlyFire);
+  BYTESWAP(psp->sp_bWeaponsStay);
+  BYTESWAP(psp->sp_bAmmoStays);
+  BYTESWAP(psp->sp_bHealthArmorStays);
+  BYTESWAP(psp->sp_bPlayEntireGame);
+  BYTESWAP(psp->sp_bAllowHealth);
+  BYTESWAP(psp->sp_bAllowArmor);
+  BYTESWAP(psp->sp_bInfiniteAmmo);
+  BYTESWAP(psp->sp_bRespawnInPlace);
+  BYTESWAP(psp->sp_fEnemyMovementSpeed);
+  BYTESWAP(psp->sp_fEnemyAttackSpeed);
+  BYTESWAP(psp->sp_fDamageStrength);
+  BYTESWAP(psp->sp_fAmmoQuantity);
+  BYTESWAP(psp->sp_fManaTransferFactor);
+  BYTESWAP(psp->sp_iInitialMana);
+  BYTESWAP(psp->sp_fExtraEnemyStrength);
+  BYTESWAP(psp->sp_fExtraEnemyStrengthPerPlayer);
+  BYTESWAP(psp->sp_ctCredits);
+  BYTESWAP(psp->sp_ctCreditsLeft);
+  BYTESWAP(psp->sp_tmSpawnInvulnerability);
+  BYTESWAP(psp->sp_iBlood);
+  BYTESWAP(psp->sp_bGibs);
+  BYTESWAP(psp->sp_bEndOfGame);
+  BYTESWAP(psp->sp_ulLevelsMask);
+  BYTESWAP(psp->sp_bUseExtraEnemies);
 
   // read world and its state
   ReadWorldAndState_t(pstr);
@@ -1764,7 +1805,48 @@ void CSessionState::Write_t(CTStream *pstr)  // throw char *
   (*pstr)<<ses_fRealTimeFactor;
   // write session properties to stream
   (*pstr)<<_pNetwork->ga_strSessionName;
-  pstr->Write_t(_pNetwork->ga_aubProperties, NET_MAXSESSIONPROPERTIES);
+  CUniversalSessionProperties sp;
+  memcpy(&sp, _pNetwork->ga_aubProperties, NET_MAXSESSIONPROPERTIES); 
+  BYTESWAP(sp.usp_sp.sp_ctMaxPlayers);
+  BYTESWAP(sp.usp_sp.sp_bWaitAllPlayers);
+  BYTESWAP(sp.usp_sp.sp_bQuickTest);
+  BYTESWAP(sp.usp_sp.sp_bCooperative);
+  BYTESWAP(sp.usp_sp.sp_bSinglePlayer);
+  BYTESWAP(sp.usp_sp.sp_bUseFrags);
+  BYTESWAP((INDEX&)sp.usp_sp.sp_gmGameMode);
+  BYTESWAP((INDEX&)sp.usp_sp.sp_gdGameDifficulty);
+  BYTESWAP(sp.usp_sp.sp_ulSpawnFlags);
+  BYTESWAP(sp.usp_sp.sp_bMental);
+  BYTESWAP(sp.usp_sp.sp_iScoreLimit);
+  BYTESWAP(sp.usp_sp.sp_iFragLimit);
+  BYTESWAP(sp.usp_sp.sp_iTimeLimit);
+  BYTESWAP(sp.usp_sp.sp_bTeamPlay);
+  BYTESWAP(sp.usp_sp.sp_bFriendlyFire);
+  BYTESWAP(sp.usp_sp.sp_bWeaponsStay);
+  BYTESWAP(sp.usp_sp.sp_bAmmoStays);
+  BYTESWAP(sp.usp_sp.sp_bHealthArmorStays);
+  BYTESWAP(sp.usp_sp.sp_bPlayEntireGame);
+  BYTESWAP(sp.usp_sp.sp_bAllowHealth);
+  BYTESWAP(sp.usp_sp.sp_bAllowArmor);
+  BYTESWAP(sp.usp_sp.sp_bInfiniteAmmo);
+  BYTESWAP(sp.usp_sp.sp_bRespawnInPlace);
+  BYTESWAP(sp.usp_sp.sp_fEnemyMovementSpeed);
+  BYTESWAP(sp.usp_sp.sp_fEnemyAttackSpeed);
+  BYTESWAP(sp.usp_sp.sp_fDamageStrength);
+  BYTESWAP(sp.usp_sp.sp_fAmmoQuantity);
+  BYTESWAP(sp.usp_sp.sp_fManaTransferFactor);
+  BYTESWAP(sp.usp_sp.sp_iInitialMana);
+  BYTESWAP(sp.usp_sp.sp_fExtraEnemyStrength);
+  BYTESWAP(sp.usp_sp.sp_fExtraEnemyStrengthPerPlayer);
+  BYTESWAP(sp.usp_sp.sp_ctCredits);
+  BYTESWAP(sp.usp_sp.sp_ctCreditsLeft);
+  BYTESWAP(sp.usp_sp.sp_tmSpawnInvulnerability);
+  BYTESWAP(sp.usp_sp.sp_iBlood);
+  BYTESWAP(sp.usp_sp.sp_bGibs);
+  BYTESWAP(sp.usp_sp.sp_bEndOfGame);
+  BYTESWAP(sp.usp_sp.sp_ulLevelsMask);
+  BYTESWAP(sp.usp_sp.sp_bUseExtraEnemies);
+  pstr->Write_t(&sp, NET_MAXSESSIONPROPERTIES);
 
   // write world and its state
   WriteWorldAndState_t(pstr);
@@ -2003,10 +2085,12 @@ void CSessionState::SessionStateLoop(void)
           CPlayerTarget &plt = ses_apltPlayers[i];
           BOOL bHas = 0;
           nmMessage.ReadBits(&bHas, 1);
+          BYTESWAP(bHas);
           if (bHas) {
             if (plt.IsActive() && plt.plt_penPlayerEntity!=NULL) {
               INDEX iPing = 0;
               nmMessage.ReadBits(&iPing, 10);
+              BYTESWAP(iPing);
               plt.plt_penPlayerEntity->en_tmPing = iPing/1000.0f;
             }
           }

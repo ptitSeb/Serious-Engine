@@ -462,6 +462,7 @@ void CDrawPort::DrawPoint( PIX pixI, PIX pixJ, COLOR col, PIX pixRadius/*=1*/) c
   if( eAPI==GAT_OGL) {
     const FLOAT fI = pixI+0.5f;
     const FLOAT fJ = pixJ+0.5f;
+    BYTESWAP(col);
     glCOLOR(col);
     pglPointSize(fR);
     pglBegin(GL_POINTS);
@@ -508,6 +509,7 @@ void CDrawPort::DrawPoint3D( FLOAT3D v, COLOR col, FLOAT fRadius/*=1.0f*/) const
 
   // OpenGL
   if( eAPI==GAT_OGL) {
+    BYTESWAP(col);
     glCOLOR(col);
     pglPointSize(fRadius);
     pglBegin(GL_POINTS);
@@ -569,6 +571,7 @@ void CDrawPort::DrawLine( PIX pixI0, PIX pixJ0, PIX pixI1, PIX pixJ1, COLOR col,
   if( eAPI==GAT_OGL) {
     const FLOAT fI0 = pixI0+0.5f;  const FLOAT fJ0 = pixJ0+0.5f;
     const FLOAT fI1 = pixI1+0.5f;  const FLOAT fJ1 = pixJ1+0.5f;
+    BYTESWAP(col);
     glCOLOR(col);
     pglBegin( GL_LINES);
       pglTexCoord2f( 0,0); pglVertex2f(fI0,fJ0);
@@ -615,6 +618,7 @@ void CDrawPort::DrawLine3D( FLOAT3D v0, FLOAT3D v1, COLOR col) const
   col = AdjustColor( col, _slTexHueShift, _slTexSaturation);
   // OpenGL
   if( eAPI==GAT_OGL) {
+    BYTESWAP(col);
     glCOLOR(col);
     pglBegin( GL_LINES);
       pglVertex3f( v0(1),v0(2),v0(3));
@@ -680,6 +684,7 @@ void CDrawPort::DrawBorder( PIX pixI, PIX pixJ, PIX pixWidth, PIX pixHeight, COL
 
   // OpenGL
   if( eAPI==GAT_OGL) {
+    BYTESWAP(col);
     glCOLOR(col);
     pglBegin( GL_LINES);
       pglTexCoord2f(0,0); pglVertex2f(fI0,fJ0);   pglTexCoord2f(fD,0);  pglVertex2f(fI1,  fJ0);  // up

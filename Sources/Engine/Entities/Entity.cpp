@@ -3405,7 +3405,7 @@ void CEntity::Write_t( CTStream *ostr) // throw char *
          <<en_ulCollisionFlags
          <<en_ulSpawnFlags
          <<en_ulFlags;
-  (*ostr).Write_t(&en_mRotation, sizeof(en_mRotation));
+  (*ostr)<<en_mRotation;
   // if this is a brush
   if ( en_RenderType == RT_BRUSH || en_RenderType == RT_FIELDBRUSH) {
     // write brush index in world's brush archive

@@ -1530,10 +1530,10 @@ functions:
     for(INDEX iMsg=0; iMsg<ctMsg; iMsg++) {
       m_acmiMessages[iMsg].Write_t(*ostr);
     }
-    ostr->Write_t(&m_psLevelStats, sizeof(m_psLevelStats));
-    ostr->Write_t(&m_psLevelTotal, sizeof(m_psLevelTotal));
-    ostr->Write_t(&m_psGameStats , sizeof(m_psGameStats ));
-    ostr->Write_t(&m_psGameTotal , sizeof(m_psGameTotal ));
+    (*ostr)<<m_psLevelStats;
+    (*ostr)<<m_psLevelTotal;
+    (*ostr)<<m_psGameStats;
+    (*ostr)<<m_psGameTotal;
   }
   /* Read from stream. */
   void Read_t( CTStream *istr) // throw char *
