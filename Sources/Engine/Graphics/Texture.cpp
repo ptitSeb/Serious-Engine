@@ -752,8 +752,9 @@ void CTextureData::Read_t( CTStream *inFile)
         // alloc memory block and read mip-maps
         inFile->Read_t( td_pulFrames, slTexSize);
         #if PLATFORM_BIGENDIAN
-        for (SLONG i = 0; i < slTexSize/4; i++)
-            BYTESWAP(td_pulFrames[i]);
+        UWORD *uwptr = (UWORD *)td_pulFrames;
+        for (SLONG i = 0; i < slTexSize/2; i++)
+            BYTESWAP(uwptr[i]);
         #endif
       } 
       // if current version
@@ -765,10 +766,6 @@ void CTextureData::Read_t( CTStream *inFile)
           if( bAlphaChannel) {
             // read texture with alpha channel from file
             inFile->Read_t( pulCurrentFrame, pixFrameSizeOnDisk *4);
-            #if PLATFORM_BIGENDIAN
-            for (SLONG i = 0; i < pixFrameSizeOnDisk; i++)
-                BYTESWAP(pulCurrentFrame[i]);
-            #endif
           } else {
             // read texture without alpha channel from file
             inFile->Read_t( pulCurrentFrame, pixFrameSizeOnDisk *3);
@@ -825,6 +822,15 @@ void CTextureData::Read_t( CTStream *inFile)
       ULONG ulSize = AllocEffectBuffers(this);
       inFile->Read_t( td_pubBuffer1, ulSize);
       inFile->Read_t( td_pubBuffer2, ulSize);
+      #if PLATFORM_BIGENDIAN
+      SWORD* pNew = (SWORD*)td_pubBuffer1;
+      SWORD* pOld = (SWORD*)td_pubBuffer2;
+      for (int i = 0; i < ulSize / 2; i++)
+      {
+          BYTESWAP(pNew[i]);
+          BYTESWAP(pOld[i]);
+      }
+      #endif
     }
     // if this is chunk containing effect data
     else if( idChunk == CChunkID("FXDT"))
@@ -1008,10 +1014,6 @@ void CTextureData::Read_t( CTStream *inFile)
 // writes texutre to file
 void CTextureData::Write_t( CTStream *outFile)   // throw char *
 {
-  #if PLATFORM_BIGENDIAN
-    STUBBED("Byte swapping");
-  #endif
-
   // cannot write textures that have been mangled somehow
   _bExport = FALSE;
   if( td_ptegEffect==NULL && IsModified()) throw( TRANS("Cannot write texture that has modified frames."));
@@ -1084,14 +1086,15 @@ void CTextureData::Write_t( CTStream *outFile)   // throw char *
     { // write type of effect source
       *outFile << itEffectSource->tes_ulEffectSourceType;
       // write structure holding effect source properties
-      outFile->Write_t( &itEffectSource->tes_tespEffectSourceProperties, sizeof( struct TextureEffectSourceProperties));
+      *outFile >> itEffectSource->tes_tespEffectSourceProperties;
       INDEX ctEffectSourcePixels = itEffectSource->tes_atepPixels.Count();
       // write count of effect pixels
       *outFile << ctEffectSourcePixels;
       // if there are any effect pixels
       if( ctEffectSourcePixels>0) {
         // write all effect pixels in one block
-        outFile->Write_t( &itEffectSource->tes_atepPixels[0], sizeof(struct TextureEffectPixel)*ctEffectSourcePixels);
+        for (INDEX i = 0; i < ctEffectSourcePixels; i++)
+          *outFile >> itEffectSource->tes_atepPixels[i];
       }
     }
     // if effect buffers are valid

@@ -199,9 +199,21 @@ void CPlayerSource::WriteActionPacket(CNetworkMessage &nm)
 
   // write all in the message
   BOOL bActive = 1;
+#if PLATFORM_BIGENDIAN
+  SLONG tmp = bActive;
+  BYTESWAP(tmp);
+  nm.WriteBits(&tmp, 1);
+  tmp = pls_Index;
+  BYTESWAP(tmp);
+  nm.WriteBits(&tmp, 4);
+  tmp = iPing;
+  BYTESWAP(tmp);
+  nm.WriteBits(&tmp, 10);
+#else
   nm.WriteBits(&bActive, 1);
   nm.WriteBits(&pls_Index, 4);  // your index
   nm.WriteBits(&iPing, 10);     // your ping
+#endif
   nm<<pls_paAction;             // action
   //CPrintF("%.2f - written: %d\n", _pTimer->GetRealTimeTick(), SLONG(pls_paAction.pa_llCreated));
 
@@ -217,7 +229,13 @@ void CPlayerSource::WriteActionPacket(CNetworkMessage &nm)
   }
 
   // save sendbehind if needed
+#if PLATFORM_BIGENDIAN
+  tmp = iSendBehind;
+  BYTESWAP(tmp);
+  nm.WriteBits(&tmp, 2);
+#else
   nm.WriteBits(&iSendBehind, 2);
+#endif
   for(INDEX i=0; i<iSendBehind; i++) {
     nm<<pls_apaLastActions[i];
   }

@@ -46,7 +46,7 @@ static inline CTStream &operator>>(CTStream &strm, MeshVertex &mv)
     return(strm);
 }
 
-static inline CTStream &operator>>(CTStream &strm, const MeshVertex &mv)
+static inline CTStream &operator<<(CTStream &strm, const MeshVertex &mv)
 {
     strm<<mv.x;
     strm<<mv.y;
@@ -70,7 +70,7 @@ static inline CTStream &operator>>(CTStream &strm, MeshNormal &mn)
     return(strm);
 }
 
-static inline CTStream &operator>>(CTStream &strm, const MeshNormal &mn)
+static inline CTStream &operator<<(CTStream &strm, const MeshNormal &mn)
 {
     strm<<mn.nx;
     strm<<mn.ny;
@@ -193,7 +193,7 @@ static inline CTStream &operator>>(CTStream &strm, MeshVertexMorph &mwm)
     return(strm);
 }
 
-static inline CTStream &operator>>(CTStream &strm, const MeshVertexMorph &mwm)
+static inline CTStream &operator<<(CTStream &strm, const MeshVertexMorph &mwm)
 {
     strm<<mwm.mwm_iVxIndex;
     strm<<mwm.mwm_x;

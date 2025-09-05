@@ -458,15 +458,15 @@ void CAnimData::Write_t( CTStream *ostrFile)  // throw char *
 	// First we save main ID
 	ostrFile->WriteID_t( CChunkID( "ADAT"));
 	// Then we save number of how many animations do we have and then save them all
-	ostrFile->Write_t( &ad_NumberOfAnims, sizeof( INDEX));
+	(*ostrFile)<<ad_NumberOfAnims;
 	for( i=0; i<ad_NumberOfAnims; i++)
 	{
 		// Next block saves all data for one animation
 		ostrFile->Write_t( &ad_Anims[i].oa_Name, sizeof( NAME));
-		ostrFile->Write_t( &ad_Anims[i].oa_SecsPerFrame, sizeof( TIME));
-		ostrFile->Write_t( &ad_Anims[i].oa_NumberOfFrames, sizeof( INDEX));
-		ostrFile->Write_t( ad_Anims[i].oa_FrameIndices,
-							ad_Anims[i].oa_NumberOfFrames * sizeof( INDEX));
+		(*ostrFile)<<ad_Anims[i].oa_SecsPerFrame;
+		(*ostrFile)<<ad_Anims[i].oa_NumberOfFrames;
+		for (SLONG j = 0; j < ad_Anims[i].oa_NumberOfFrames; j++)
+			(*ostrFile)<<ad_Anims[i].oa_FrameIndices[j];
 	}
 }
 

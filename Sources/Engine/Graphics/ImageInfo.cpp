@@ -372,6 +372,10 @@ STUBBED("Byte swapping TGA data");
 
   // TGA header starts at the begining of the TGA file
   pTGAHdr = (struct TGAHeader*)pTGABuffer;
+  BYTESWAP(pTGAHdr->Width);
+  BYTESWAP(pTGAHdr->Height);
+  BYTESWAP(pTGAHdr->Xorigin);
+  BYTESWAP(pTGAHdr->Yorigin);
   // TGA image bytes definition follows up
   pTGAImage = pTGABuffer + sizeof(struct TGAHeader) + pTGAHdr->IdLength;
 
@@ -475,9 +479,13 @@ void CImageInfo::SaveTGA_t( const CTFileName &strFileName) const // throw char *
   // set TGA picture size dimensions
   memset( pTGABuffer, 0x0, sizeof(struct TGAHeader));
   pTGAHdr->Width        = (UWORD)ii_Width;
+  BYTESWAP(pTGAHdr->Width);
   pTGAHdr->Height       = (UWORD)ii_Height;
+  BYTESWAP(pTGAHdr->Height);
   pTGAHdr->BitsPerPixel = (UBYTE)ii_BitsPerPixel;
   pTGAHdr->ImageType    = 2;
+  BYTESWAP(pTGAHdr->Xorigin);
+  BYTESWAP(pTGAHdr->Yorigin);
 
   // flip image vertically
   BOOL bAlphaChannel = (slBytesPerPixel==4);

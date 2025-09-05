@@ -143,21 +143,48 @@ static inline void IncrementColorWithClip( UBYTE &ubR, UBYTE &ubG, UBYTE &ubB,
 // add the intensity to the pixel
 inline void CLayerMixer::AddToCluster( UBYTE *pub)
 {
+#if PLATFORM_LITTLEENDIAN
   IncrementByteWithClip(pub[0], ((UBYTE*)&lm_colLight)[3]);
   IncrementByteWithClip(pub[1], ((UBYTE*)&lm_colLight)[2]);
   IncrementByteWithClip(pub[2], ((UBYTE*)&lm_colLight)[1]);
+#else 
+  IncrementByteWithClip(pub[0], ((UBYTE*)&lm_colLight)[0]);
+  IncrementByteWithClip(pub[1], ((UBYTE*)&lm_colLight)[1]);
+  IncrementByteWithClip(pub[2], ((UBYTE*)&lm_colLight)[2]);
+  IncrementByteWithClip(pub[3], ((UBYTE*)&lm_colLight)[3]);
+#endif
 }
 inline void CLayerMixer::AddAmbientToCluster( UBYTE *pub)
 {
+#if PLATFORM_LITTLEENDIAN
   IncrementByteWithClip(pub[0], ((UBYTE*)&lm_colAmbient)[3]);
   IncrementByteWithClip(pub[1], ((UBYTE*)&lm_colAmbient)[2]);
   IncrementByteWithClip(pub[2], ((UBYTE*)&lm_colAmbient)[1]);
+#else
+  IncrementByteWithClip(pub[0], ((UBYTE*)&lm_colAmbient)[0]);
+  IncrementByteWithClip(pub[1], ((UBYTE*)&lm_colAmbient)[1]);
+  IncrementByteWithClip(pub[2], ((UBYTE*)&lm_colAmbient)[2]);
+  IncrementByteWithClip(pub[3], ((UBYTE*)&lm_colAmbient)[3]);
+#endif
 }
 inline void CLayerMixer::AddToCluster( UBYTE *pub, SLONG slIntensity)
 {
+#if PLATFORM_LITTLEENDIAN
   IncrementByteWithClip(pub[0], (long) (((UBYTE*)&lm_colLight)[3] *slIntensity)>>16);
   IncrementByteWithClip(pub[1], (long) (((UBYTE*)&lm_colLight)[2] *slIntensity)>>16);
   IncrementByteWithClip(pub[2], (long) (((UBYTE*)&lm_colLight)[1] *slIntensity)>>16);
+#else
+  UBYTE r, g, b, a;
+  ColorToRGBA(lm_colLight, r, g, b, a);
+
+  SLONG dR = ((SLONG)r * (SLONG)slIntensity) >> 16;
+  SLONG dG = ((SLONG)g * (SLONG)slIntensity) >> 16;
+  SLONG dB = ((SLONG)b * (SLONG)slIntensity) >> 16;
+
+  IncrementByteWithClip(pub[0], dR);
+  IncrementByteWithClip(pub[1], dG);
+  IncrementByteWithClip(pub[2], dB);
+#endif
 }
 
   
@@ -1406,6 +1433,12 @@ rowDone:
   SLONG slR1=0,slG1=0,slB1=0;
   ColorToRGB( col0, (UBYTE&)slR0,(UBYTE&)slG0,(UBYTE&)slB0);
   ColorToRGB( col1, (UBYTE&)slR1,(UBYTE&)slG1,(UBYTE&)slB1);
+  BYTESWAP(slR0);
+  BYTESWAP(slG0);
+  BYTESWAP(slB0);
+  BYTESWAP(slR1);
+  BYTESWAP(slG1);
+  BYTESWAP(slB1);
   if( gp.gp_bDark) {
     slR0 = -slR0;  slG0 = -slG0;  slB0 = -slB0;
     slR1 = -slR1;  slG1 = -slG1;  slB1 = -slB1;
@@ -1813,10 +1846,7 @@ void CLayerMixer::MixOneMipmap(CBrushShadowMap *pbsm, INDEX iMipmap)
   // Forces C fallback; BYTESWAP itself is a no-op on little endian.
   ULONG swapped = BYTESWAP32_unsigned(colAmbient);
   #else
-  STUBBED("actually need byteswap?");
-  // (uses inline asm on MacOS PowerPC)
   ULONG swapped = colAmbient;
-  BYTESWAP(swapped);
   #endif
 
   for (ULONG *ptr = this->lm_pulShadowMap; count; count--)
@@ -1964,7 +1994,11 @@ __forceinline void CLayerMixer::FillShadowLayer( COLOR col)
 #else
    DWORD* dst = (DWORD*)lm_pulShadowMap;
    int n = lm_pixCanvasSizeU*lm_pixCanvasSizeV;   
+#if PLATFORM_LITTLEENDIAN
    DWORD color = BYTESWAP32_unsigned(col);
+#else
+   DWORD color = col;
+#endif
    while(n--) {*(dst++)=color;}
 #endif
 }

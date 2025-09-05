@@ -160,23 +160,24 @@ public:
   void WriteBits(const void *pvBuffer, INDEX ctBits);
 
   /* Read an object from message. */
-  inline CNetworkMessage &operator>>(float  &f) { Read( &f, sizeof( f)); return *this; }
-  inline CNetworkMessage &operator>>(ULONG &ul) { Read(&ul, sizeof(ul)); return *this; }
-  inline CNetworkMessage &operator>>(UWORD &uw) { Read(&uw, sizeof(uw)); return *this; }
+  inline CNetworkMessage &operator>>(float  &f) { Read( &f, sizeof( f)); BYTESWAP(f);  return *this; }
+  inline CNetworkMessage &operator>>(double &d) { Read( &d, sizeof( d)); BYTESWAP(d);  return *this; }
+  inline CNetworkMessage &operator>>(ULONG &ul) { Read(&ul, sizeof(ul)); BYTESWAP(ul); return *this; }
+  inline CNetworkMessage &operator>>(UWORD &uw) { Read(&uw, sizeof(uw)); BYTESWAP(uw); return *this; }
   inline CNetworkMessage &operator>>(UBYTE &ub) { Read(&ub, sizeof(ub)); return *this; }
-  inline CNetworkMessage &operator>>(SLONG &sl) { Read(&sl, sizeof(sl)); return *this; }
-  inline CNetworkMessage &operator>>(SWORD &sw) { Read(&sw, sizeof(sw)); return *this; }
+  inline CNetworkMessage &operator>>(SLONG &sl) { Read(&sl, sizeof(sl)); BYTESWAP(sl); return *this; }
+  inline CNetworkMessage &operator>>(SWORD &sw) { Read(&sw, sizeof(sw)); BYTESWAP(sw); return *this; }
   inline CNetworkMessage &operator>>(SBYTE &sb) { Read(&sb, sizeof(sb)); return *this; }
   inline CNetworkMessage &operator>>(MESSAGETYPE &mt) { Read(&mt, sizeof(mt)); return *this; }
   CNetworkMessage &operator>>(CTString &str);
   /* Write an object into message. */
-  inline CNetworkMessage &operator<<(const float  &f) { Write( &f, sizeof( f)); return *this; }
-  inline CNetworkMessage &operator<<(const double &d) { Write( &d, sizeof( d)); return *this; }
-  inline CNetworkMessage &operator<<(const ULONG &ul) { Write(&ul, sizeof(ul)); return *this; }
-  inline CNetworkMessage &operator<<(const UWORD &uw) { Write(&uw, sizeof(uw)); return *this; }
+  inline CNetworkMessage &operator<<(const float  &f) { float  zf =  f; BYTESWAP( zf); Write( &zf, sizeof( zf)); return *this; }
+  inline CNetworkMessage &operator<<(const double &d) { double zd =  d; BYTESWAP( zd); Write( &zd, sizeof( zd)); return *this; }
+  inline CNetworkMessage &operator<<(const ULONG &ul) { ULONG zul = ul; BYTESWAP(zul); Write(&zul, sizeof(zul)); return *this; }
+  inline CNetworkMessage &operator<<(const UWORD &uw) { UWORD zuw = uw; BYTESWAP(zuw); Write(&zuw, sizeof(zuw)); return *this; }
   inline CNetworkMessage &operator<<(const UBYTE &ub) { Write(&ub, sizeof(ub)); return *this; }
-  inline CNetworkMessage &operator<<(const SLONG &sl) { Write(&sl, sizeof(sl)); return *this; }
-  inline CNetworkMessage &operator<<(const SWORD &sw) { Write(&sw, sizeof(sw)); return *this; }
+  inline CNetworkMessage &operator<<(const SLONG &sl) { SLONG zsl = sl; BYTESWAP(zsl); Write(&zsl, sizeof(zsl)); return *this; }
+  inline CNetworkMessage &operator<<(const SWORD &sw) { SWORD zsw = sw; BYTESWAP(zsw); Write(&zsw, sizeof(zsw)); return *this; }
   inline CNetworkMessage &operator<<(const SBYTE &sb) { Write(&sb, sizeof(sb)); return *this; }
   inline CNetworkMessage &operator<<(const MESSAGETYPE &mt) { Write(&mt, sizeof(mt)); return *this; }
   CNetworkMessage &operator<<(const CTString &str);

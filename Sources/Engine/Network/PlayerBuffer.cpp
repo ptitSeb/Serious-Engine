@@ -71,6 +71,7 @@ void CPlayerBuffer::ReceiveActionPacket(CNetworkMessage *pnm, INDEX iMaxBuffer)
   // read sendbehind 
   INDEX iSendBehind = 0;
   pnm->ReadBits(&iSendBehind, 2);
+  BYTESWAP(iSendBehind);
   // foreach resent action
   for(INDEX i=0; i<iSendBehind; i++) {
     CPlayerAction paOld;

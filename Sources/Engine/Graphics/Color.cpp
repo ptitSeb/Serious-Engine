@@ -124,6 +124,12 @@ BOOL CompareChroma( COLOR col1, COLOR col2)
   SLONG slR2=0, slG2=0, slB2=0;
   ColorToRGB( col1, (UBYTE&)slR1, (UBYTE&)slG1, (UBYTE&)slB1);
   ColorToRGB( col2, (UBYTE&)slR2, (UBYTE&)slG2, (UBYTE&)slB2);
+  BYTESWAP(slR1);
+  BYTESWAP(slG1);
+  BYTESWAP(slB1);
+  BYTESWAP(slR2);
+  BYTESWAP(slG2);
+  BYTESWAP(slB2);
   SLONG slMax1 = Max(Max(slR1,slG1),slB1);
   SLONG slMax2 = Max(Max(slR2,slG2),slB2);
   // trivial?

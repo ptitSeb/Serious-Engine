@@ -219,9 +219,9 @@ static BOOL StartUp_SDLaudio( CSoundLibrary &sl, BOOL bReport=TRUE)
   if (bps <= 8)
     desired.format = AUDIO_U8;
   else if (bps <= 16)
-    desired.format = AUDIO_S16LSB;
+    desired.format = AUDIO_S16SYS;
   else if (bps <= 32)
-    desired.format = AUDIO_S32LSB;
+    desired.format = AUDIO_S32SYS;
   else {
     CPrintF(TRANSV("Unsupported bits-per-sample: %d\n"), bps);
     return FALSE;

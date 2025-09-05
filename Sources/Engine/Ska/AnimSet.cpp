@@ -396,7 +396,10 @@ void CAnimSet::Write_t(CTStream *ostrFile)
       // write bone envelope ID
       (*ostrFile)<<pstrNameID;
       // write default pos(matrix12)
-      ostrFile->Write_t(&be.be_mDefaultPos[0],sizeof(FLOAT)*12);
+      for(int i = 0; i < 12; i++)
+      {
+        (*ostrFile)<<be.be_mDefaultPos[i];
+      }
       // count positions
       INDEX ctp = be.be_apPos.Count();
       // write position count
@@ -405,7 +408,7 @@ void CAnimSet::Write_t(CTStream *ostrFile)
       for(INDEX ip=0;ip<ctp;ip++)
       {
         // write position
-        ostrFile->Write_t(&be.be_apPos[ip],sizeof(AnimPos));
+        (*ostrFile)<<be.be_apPos[ip];
       }
       // count rotations
       INDEX ctRotations = be.be_arRot.Count();
@@ -415,7 +418,7 @@ void CAnimSet::Write_t(CTStream *ostrFile)
       {
         // write rotation
         AnimRot &arRot = be.be_arRot[ir];
-        ostrFile->Write_t(&arRot,sizeof(AnimRot));
+        (*ostrFile)<<arRot;
       }
       INDEX ctOptRotations = be.be_arRotOpt.Count();
       if(ctOptRotations>0)
@@ -439,7 +442,10 @@ void CAnimSet::Write_t(CTStream *ostrFile)
       // write morph factors count
       INDEX ctmf = me.me_aFactors.Count();
       (*ostrFile)<<ctmf;
-      ostrFile->Write_t(&me.me_aFactors[0],sizeof(FLOAT)*ctmf);
+      for(int i = 0; i < ctmf; i++)
+      {
+        (*ostrFile)<<me.me_aFactors[i];
+      }
     }
   }
 }

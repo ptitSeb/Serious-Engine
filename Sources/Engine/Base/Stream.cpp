@@ -498,6 +498,7 @@ SLONG CTStream::GetSize_t(void) // throws char *
 	SLONG chunkSize;
 
 	Read_t( (char *) &chunkSize, sizeof( SLONG));
+	BYTESWAP(chunkSize);
 	return( chunkSize);
 }
 

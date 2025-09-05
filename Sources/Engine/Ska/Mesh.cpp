@@ -546,9 +546,9 @@ void CMesh::Write_t(CTStream *ostrFile)
     // write wertex count
     (*ostrFile)<<ctVx;
     // write wertices
-    ostrFile->Write_t(&mLod.mlod_aVertices[0],sizeof(MeshVertex)*ctVx);
+    for (int i = 0; i < ctVx; i++) (*ostrFile)<<(MeshVertex)mLod.mlod_aVertices[i];
     // write normals
-    ostrFile->Write_t(&mLod.mlod_aNormals[0],sizeof(MeshNormal)*ctVx);
+    for (int i = 0; i < ctVx; i++) (*ostrFile)<<(MeshNormal)mLod.mlod_aNormals[i];
 
     // write uvmaps count
     (*ostrFile)<<ctUV;
@@ -558,11 +558,11 @@ void CMesh::Write_t(CTStream *ostrFile)
       CTString strNameID = ska_GetStringFromTable(mLod.mlod_aUVMaps[iuv].muv_iID);
       (*ostrFile)<<strNameID;
       // write uvmaps texcordinates
-      ostrFile->Write_t(&mLod.mlod_aUVMaps[iuv].muv_aTexCoords[0],sizeof(MeshTexCoord)*ctVx);
+      for (int i = 0; i < ctVx; i++) (*ostrFile)<<(MeshTexCoord)mLod.mlod_aUVMaps[iuv].muv_aTexCoords[i];
     }
 
     // write surfaces count
-    ostrFile->Write_t(&ctSf,sizeof(INDEX));
+    (*ostrFile)<<ctSf;
     // write surfaces
     for(INDEX isf=0;isf<ctSf;isf++) {
       MeshSurface &msrf = mLod.mlod_aSurfaces[isf];
@@ -577,7 +577,7 @@ void CMesh::Write_t(CTStream *ostrFile)
       // write tris count
       (*ostrFile)<<ctTris;
       // write triangles
-      ostrFile->Write_t(&mLod.mlod_aSurfaces[isf].msrf_aTriangles[0],sizeof(MeshTriangle)*ctTris);
+      for (int i = 0; i < ctTris; i++) (*ostrFile)<<(MeshTriangle)mLod.mlod_aSurfaces[isf].msrf_aTriangles[i];
 
       // write bool that this surface has a shader
       INDEX bShaderExists = (msrf.msrf_pShader!=NULL);
@@ -652,7 +652,7 @@ void CMesh::Write_t(CTStream *ostrFile)
       // write wertex weights count
       (*ostrFile)<<ctWw;
       // write wertex weights
-      ostrFile->Write_t(&mLod.mlod_aWeightMaps[iwm].mwm_aVertexWeight[0],sizeof(MeshVertexWeight)*ctWw);
+      for (int i = 0; i < ctWw; i++) (*ostrFile)<<(MeshVertexWeight)mLod.mlod_aWeightMaps[ctWw].mwm_aVertexWeight[i];
     }
 
     // write morphmaps count
@@ -667,9 +667,9 @@ void CMesh::Write_t(CTStream *ostrFile)
       (*ostrFile)<<mLod.mlod_aMorphMaps[imm].mmp_bRelative;
       //ostrFile->Write_t(&mLod.mlod_aMorphMaps[imm].mmp_bRelative,sizeof(BOOL));
       // write morph sets count
-      ostrFile->Write_t(&ctms,sizeof(INDEX));
+      (*ostrFile)<<ctms;
       // write morph sets
-      ostrFile->Write_t(&mLod.mlod_aMorphMaps[imm].mmp_aMorphMap[0],sizeof(MeshVertexMorph)*ctms);
+      for (int i = 0; i < ctms; i++) (*ostrFile)<<mLod.mlod_aMorphMaps[imm].mmp_aMorphMap[i];
     }
   }
 }

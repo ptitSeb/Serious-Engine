@@ -192,9 +192,9 @@ void CSkeleton::Write_t(CTStream *ostrFile)
       (*ostrFile)<<strParentID;
       //(*ostrFile)<<slod.slod_aBones[ib].sb_iParentIndex;
       // write AbsPlacement matrix
-      ostrFile->Write_t(&sb.sb_mAbsPlacement,sizeof(FLOAT)*12);
+      for (int i = 0; i < 12; i++) (*ostrFile)<<sb.sb_mAbsPlacement[i];
       // write RelPlacement Qvect stuct
-      ostrFile->Write_t(&sb.sb_qvRelPlacement,sizeof(QVect));
+      (*ostrFile)<<sb.sb_qvRelPlacement;
       // write offset len
       (*ostrFile)<<sb.sb_fOffSetLen;
       // write bone length
