@@ -445,7 +445,7 @@ printf("CHECK THIS: %s:%d\n", __FILE__, __LINE__);
 
 
 // square root (works with negative numbers)
-#ifdef __arm__
+#if !defined(__i386__) && !defined(__x86_64__)
 inline FLOAT Sqrt( FLOAT x) { return sqrtf( ClampDn( x, 0.0f)); }
 #else
 inline FLOAT Sqrt( FLOAT x) { return (FLOAT)sqrt( ClampDn( x, 0.0f)); }
@@ -495,7 +495,7 @@ inline FLOAT RadAngle(ANGLE aAngle) {
   return FLOAT (WrapAngle(aAngle)*PI/ANGLE_180);
 }
 
-#ifdef __arm__
+#if !defined(__i386__) && !defined(__x86_64__)
 inline ENGINE_API FLOAT Sin(ANGLE a) { return sinf(a*(PI/ANGLE_180)); };
 inline ENGINE_API FLOAT Cos(ANGLE a) { return cosf(a*(PI/ANGLE_180)); };
 inline ENGINE_API FLOAT Tan(ANGLE a) { return tanf(a*(PI/ANGLE_180)); };
@@ -505,7 +505,7 @@ inline ENGINE_API FLOAT Cos(ANGLE a) { return cos(a*(PI/ANGLE_180)); };
 inline ENGINE_API FLOAT Tan(ANGLE a) { return tan(a*(PI/ANGLE_180)); };
 #endif
 
-#ifdef __arm__
+#if !defined(__i386__) && !defined(__x86_64__)
 inline ENGINE_API FLOAT SinFast(ANGLE a) { return sinf(a*(PI/ANGLE_180)); };
 inline ENGINE_API FLOAT CosFast(ANGLE a) { return cosf(a*(PI/ANGLE_180)); };
 inline ENGINE_API FLOAT TanFast(ANGLE a) { return tanf(a*(PI/ANGLE_180)); };

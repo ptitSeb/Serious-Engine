@@ -47,7 +47,7 @@ static inline void BoxToGrid(
   FLOAT fMinZ = boxEntity.Min()(3);
   FLOAT fMaxX = boxEntity.Max()(1);
   FLOAT fMaxZ = boxEntity.Max()(3);
-#ifdef __arm__
+#if !defined(__i386__) && !defined(__x86_64__)
 #if defined(PLATFORM_PANDORA) || defined(PLATFORM_PYRA)
   #define Isinf(a) (((*(unsigned int*)&a)&0x7fffffff)==0x7f800000)
 #else

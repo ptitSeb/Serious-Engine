@@ -309,7 +309,7 @@ Rect ExtractPolygonsInBox(CTerrain *ptrTerrain, const FLOATaabbox3D &bboxExtract
   Rect rc;
   if(!bFixSize) {
     // max vector of bbox in incremented for one, because first vertex is at 0,0,0 in world and in heightmap is at 1,1
-#ifdef __arm__
+#if !defined(__i386__) && !defined(__x86_64__)
 #if defined(PLATFORM_PANDORA) || defined(PLATFORM_PYRA)
   #define Isinf(a) (((*(unsigned int*)&a)&0x7fffffff)==0x7f800000)
 #else
@@ -327,7 +327,7 @@ Rect ExtractPolygonsInBox(CTerrain *ptrTerrain, const FLOATaabbox3D &bboxExtract
 #endif
   } else {
     // max vector of bbox in incremented for one, because first vertex is at 0,0,0 in world and in heightmap is at 1,1
-#ifdef __arm__
+#if !defined(__i386__) && !defined(__x86_64__)
     rc.rc_iLeft   = (Isinf(bbox.minvect(1)))?(INDEX)0:Clamp((INDEX)(bbox.minvect(1)-0),(INDEX)0,ptrTerrain->tr_pixHeightMapWidth);
     rc.rc_iTop    = (Isinf(bbox.minvect(3)))?(INDEX)0:Clamp((INDEX)(bbox.minvect(3)-0),(INDEX)0,ptrTerrain->tr_pixHeightMapHeight);
     rc.rc_iRight  = (Isinf(bbox.maxvect(1)))?(INDEX)0:Clamp((INDEX)(bbox.maxvect(1)+0),(INDEX)0,ptrTerrain->tr_pixHeightMapWidth);
