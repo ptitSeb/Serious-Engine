@@ -86,7 +86,7 @@ extern BOOL CVA_bModels;
 static FLOAT _fLastBrightness, _fLastContrast, _fLastGamma;
 static FLOAT _fLastBiasR, _fLastBiasG, _fLastBiasB;
 static INDEX _iLastLevels;
-#ifdef PLATFORM_WIN32 // DG: not used on other platforms
+#ifndef PLATFORM_PANDORA // DG: not used on other platforms
 static UWORD _auwGammaTable[256*3];
 #endif
 
@@ -1799,7 +1799,7 @@ INDEX _ctProbeShdU = 0;
 INDEX _ctProbeShdB = 0;
 INDEX _ctFullShdU  = 0;
 SLONG _slFullShdUBytes = 0;
-#ifdef PLATFORM_WIN32 // only used there
+#ifndef PLATFORM_PANDORA // only used there
 static BOOL GenerateGammaTable(void);
 #endif
 
@@ -2003,6 +2003,18 @@ void CGfxLibrary::SwapBuffers(CViewPort *pvp)
     }
   } 
   else
+#else
+  if( gl_ulFlags & GLF_ADJUSTABLEGAMMA) {
+    // ... and required
+    const BOOL bTableSet = GenerateGammaTable();
+    if( bTableSet) {
+        Uint16 *rampR = &_auwGammaTable[0];
+        Uint16 *rampG = &_auwGammaTable[256];
+        Uint16 *rampB = &_auwGammaTable[512];
+        SDL_SetWindowGammaRamp((SDL_Window *) pvp->vp_hWnd, rampR, rampG, rampB);
+    }
+  }
+  else
 #endif
   // if not supported
   {
@@ -2063,7 +2075,7 @@ void CGfxLibrary::UnlockRaster( CRaster *praToUnlock)
 }
 
 
-#ifdef PLATFORM_WIN32 // DG: only used on windows
+#ifndef PLATFORM_PANDORA // DG: only used on windows
 // generates gamma table and returns true if gamma table has been changed
 static BOOL GenerateGammaTable(void)
 {

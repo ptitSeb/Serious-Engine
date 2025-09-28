@@ -696,7 +696,9 @@ void End(void)
     pdpNormal   = NULL;
   }
 
+#ifdef PLATFORM_WIN32
   CloseMainWindow();
+#endif
   MainWindow_End();
   DestroyMenus();
   _pGame->End();
@@ -704,6 +706,9 @@ void End(void)
   // unlock the directory
   DirectoryLockOff();
   SE_EndEngine();
+#ifndef PLATFORM_WIN32
+  CloseMainWindow();
+#endif
 
 #if PLATFORM_UNIX
   SDL_Quit();
