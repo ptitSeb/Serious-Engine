@@ -1250,7 +1250,7 @@ static void AnimateWater( SLONG slDensity)
 //////////////////////////// displace texture
 
 
-#define PIXEL(u,v) pulTextureBase[ ((u)&(SLONG&)mmBaseWidthMask) + ((v)&(SLONG&)mmBaseHeightMask) *pixBaseWidth]
+#define PIXEL(u,v) pulTextureBase[ ((ULONG)(u)&mmBaseWidthMask) + (((ULONG)(v)&mmBaseHeightMask) *pixBaseWidth)]
 
 ULONG _slHeightMapStep_renderWater = 0;
 PIX _pixBaseWidth_renderWater = 0;
